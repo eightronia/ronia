@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎂 Joyeux Anniversaire !</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Lora:ital,wght@0,400;1,400;1,600&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d0d1a;
+  --card: #13132b;
+  --gold: #f5c842;
+  --pink: #ff6b9d;
+  --mint: #43e8b0;
+  --blue: #4facfe;
+  --orange: #ff9a56;
+  --text: #f0eeff;
+  --muted: rgba(240,238,255,0.5);
+  --radius: 20px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  min-height: 100vh;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* ── STARS BG ── */
+.stars {
+  position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
+}
+.star {
+  position: absolute; background: #fff; border-radius: 50%;
+  animation: twinkle linear infinite;
+}
+@keyframes twinkle {
+  0%,100% { opacity: 0.1; transform: scale(1); }
+  50%      { opacity: 0.9; transform: scale(1.4); }
+}
+
+/* ── MAIN STAGE ── */
+#stage {
+  position: relative; z-index: 1;
+  width: 100vw; height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 1.5rem;
+}
+
+/* ── PROGRESS DOTS ── */
+#dots {
+  position: fixed; top: 1.4rem; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 8px; z-index: 100;
+}
+.dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  transition: all 0.4s ease;
+}
+.dot.active { background: var(--gold); transform: scale(1.4); }
+.dot.done   { background: var(--mint); }
+
+/* ── CARDS ── */
+.card {
+  width: 100%; max-width: 480px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  position: relative;
+  animation: cardIn 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards;
+}
+
+@keyframes cardIn {
+  from { opacity:0; transform: scale(0.85) translateY(30px); }
+  to   { opacity:1; transform: scale(1)    translateY(0); }
+}
+@keyframes cardOut {
+  from { opacity:1; transform: scale(1)    translateY(0); }
+  to   { opacity:0; transform: scale(0.85) translateY(-30px); }
+}
+.card.leaving { animation: cardOut 0.35s ease forwards; }
+
+/* Intro card */
+.card-intro {
+  background: linear-gradient(135deg, #1a1a3e 0%, #2d1b4e 100%);
+  border: 1px solid rgba(245,200,66,0.3);
+  padding: 3rem 2.5rem;
+  text-align: center;
+  box-shadow: 0 0 80px rgba(245,200,66,0.1);
+}
+.card-intro .big-emoji { font-size: 4rem; display:block; margin-bottom:1rem; animation: bounce 1.5s ease infinite; }
+@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+.card-intro h1 {
+  font-size: 2.2rem; font-weight: 800;
+  background: linear-gradient(135deg, var(--gold), var(--pink));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  margin-bottom: 0.8rem;
+}
+.card-intro p { color: var(--muted); font-family:'Lora',serif; font-size:1.05rem; line-height:1.7; }
+
+/* Quote card */
+.card-quote {
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 2.8rem 2rem;
+  text-align: center;
+  position: relative;
+  overflow: visible;
+}
+.card-quote .tag {
+  position: absolute; top:-12px; left:50%; transform:translateX(-50%);
+  background: var(--gold); color: #000; font-size:0.7rem; font-weight:700;
+  letter-spacing:0.15em; padding: 4px 14px; border-radius:20px;
+  text-transform: uppercase;
+}
+.card-quote blockquote {
+  font-family:'Lora',serif; font-style:italic;
+  font-size: clamp(1.1rem, 4vw, 1.4rem);
+  line-height:1.75; color: var(--text);
+  margin-bottom:1.2rem;
+}
+.card-quote .qauthor {
+  color: var(--gold); font-size:0.85rem; letter-spacing:0.1em;
+}
+.card-quote .qdeco {
+  font-size:5rem; position:absolute; opacity:0.06; font-family:serif;
+  line-height:1;
+}
+.card-quote .qdeco.tl { top:-10px; left:10px; }
+.card-quote .qdeco.br { bottom:-30px; right:10px; transform:rotate(180deg); }
+
+/* Lyrics card */
+.card-lyrics {
+  background: linear-gradient(135deg, #1c0a2e, #0a1c2e);
+  border: 1px solid rgba(67,232,176,0.25);
+  padding: 2.8rem 2rem;
+  text-align: center;
+  position: relative;
+}
+.card-lyrics .tag {
+  position: absolute; top:-12px; left:50%; transform:translateX(-50%);
+  background: var(--mint); color: #000; font-size:0.7rem; font-weight:700;
+  letter-spacing:0.15em; padding: 4px 14px; border-radius:20px;
+  text-transform: uppercase;
+}
+.card-lyrics .note { font-size:2.5rem; display:block; margin-bottom:1rem; }
+.card-lyrics .lyric-text {
+  font-family:'Lora',serif; font-style:italic; font-size:1.3rem;
+  line-height:1.8; color:#e0fff5;
+}
+.card-lyrics .lyric-artist {
+  margin-top:1rem; color:var(--mint); font-size:0.85rem; letter-spacing:0.1em;
+}
+
+/* Photo card */
+.card-photo {
+  background: #0a0a1a;
+  border: 1px solid rgba(255,107,157,0.3);
+  position: relative;
+  overflow: hidden;
+}
+.card-photo .tag {
+  position: absolute; top:12px; left:50%; transform:translateX(-50%);
+  z-index:2; background: var(--pink); color:#fff; font-size:0.7rem; font-weight:700;
+  letter-spacing:0.15em; padding: 4px 14px; border-radius:20px;
+  text-transform: uppercase;
+}
+.card-photo img {
+  width:100%; aspect-ratio:4/5; object-fit:cover; display:block;
+}
+.card-photo .photo-caption {
+  position:absolute; bottom:0; left:0; right:0;
+  background:linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+  padding:2rem 1.2rem 1rem;
+  font-family:'Lora',serif; font-style:italic; font-size:1rem;
+  color:#fff;
+}
+.card-photo .placeholder-photo {
+  width:100%; aspect-ratio:4/5;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:0.8rem; color: rgba(255,107,157,0.5);
+  background: repeating-linear-gradient(45deg, rgba(255,107,157,0.03) 0px, rgba(255,107,157,0.03) 1px, transparent 1px, transparent 12px);
+}
+.card-photo .placeholder-photo span { font-size:0.8rem; text-align:center; padding:0 1rem; }
+
+/* Video card */
+.card-video {
+  background: #0a0a1a;
+  border: 1px solid rgba(79,172,254,0.3);
+  position: relative;
+  overflow: hidden;
+}
+.card-video .tag {
+  position: absolute; top:12px; left:50%; transform:translateX(-50%);
+  z-index:2; background: var(--blue); color:#fff; font-size:0.7rem; font-weight:700;
+  letter-spacing:0.15em; padding: 4px 14px; border-radius:20px;
+  text-transform: uppercase;
+}
+.card-video video {
+  width:100%; aspect-ratio:9/16; max-height:65vh; object-fit:contain;
+  background:#000; display:block;
+}
+.card-video .placeholder-video {
+  width:100%; aspect-ratio:9/16; max-height:65vh;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:1rem; color: rgba(79,172,254,0.5);
+  background: repeating-linear-gradient(45deg, rgba(79,172,254,0.03) 0px, rgba(79,172,254,0.03) 1px, transparent 1px, transparent 12px);
+}
+.card-video .play-circle {
+  width:64px; height:64px; border-radius:50%;
+  border:2px solid rgba(79,172,254,0.4);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.5rem;
+}
+.card-video .placeholder-video span { font-size:0.8rem; text-align:center; padding:0 1rem; }
+
+/* ── STEP LABEL ── */
+.step-label {
+  font-size:0.75rem; letter-spacing:0.2em; color:var(--muted);
+  text-transform:uppercase; text-align:center;
+  margin-bottom:1rem;
+  animation: cardIn 0.5s ease forwards;
+}
+
+/* ── NEXT BUTTON ── */
+#btn-wrap {
+  margin-top:1.5rem;
+  display:flex; flex-direction:column; align-items:center; gap:0.8rem;
+}
+
+#btn-next {
+  background: linear-gradient(135deg, var(--gold), var(--orange));
+  color: #0d0d1a; border:none; cursor:pointer;
+  font-family:'Syne',sans-serif; font-weight:800;
+  font-size:1rem; letter-spacing:0.05em;
+  padding: 1rem 2.8rem; border-radius:50px;
+  box-shadow: 0 4px 30px rgba(245,200,66,0.35);
+  transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
+  position:relative; overflow:hidden;
+}
+#btn-next:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 8px 40px rgba(245,200,66,0.5);
+}
+#btn-next:active {
+  transform: scale(0.96);
+}
+#btn-next .shine {
+  position:absolute; top:-50%; left:-60%; width:40%; height:200%;
+  background:rgba(255,255,255,0.25); transform:skewX(-20deg);
+  transition:left 0.5s;
+  pointer-events:none;
+}
+#btn-next:hover .shine { left:130%; }
+
+#step-counter {
+  color:var(--muted); font-size:0.78rem; letter-spacing:0.1em;
+}
+
+/* ── FINALE ── */
+#finale {
+  display:none;
+  position:fixed; inset:0; z-index:200;
+  background: radial-gradient(ellipse at 50% 100%, #1a0a2e 0%, #0d0d1a 60%);
+  flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; padding:1.5rem;
+}
+#finale.show { display:flex; }
+
+.finale-title {
+  font-family:'Pacifico',cursive;
+  font-size: clamp(2.2rem, 8vw, 4rem);
+  background: linear-gradient(135deg, var(--gold), var(--pink), var(--mint));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  margin-bottom:0.3rem;
+  animation: popIn 0.8s cubic-bezier(0.34,1.56,0.64,1) 0.2s both;
+}
+/* 🔧 REMPLACE "Prénom" */
+.finale-name {
+  font-family:'Pacifico',cursive;
+  font-size: clamp(2rem, 7vw, 3.2rem);
+  color: var(--gold);
+  animation: popIn 0.8s cubic-bezier(0.34,1.56,0.64,1) 0.5s both;
+  margin-bottom:1.5rem;
+}
+@keyframes popIn {
+  from { opacity:0; transform:scale(0.5); }
+  to   { opacity:1; transform:scale(1); }
+}
+
+/* ── SVG CAKE ── */
+#cake-svg { cursor:pointer; animation: cakeFloat 3s ease-in-out infinite; }
+@keyframes cakeFloat {
+  0%,100% { transform:translateY(0); }
+  50%      { transform:translateY(-8px); }
+}
+.candle-flame { transition: opacity 0.3s; transform-origin: center bottom; }
+.candle-flame.out { opacity:0; }
+@keyframes flameDance {
+  0%,100% { transform:scaleX(1) scaleY(1); }
+  25%     { transform:scaleX(0.85) scaleY(1.1); }
+  75%     { transform:scaleX(1.1) scaleY(0.9); }
+}
+.flame-anim { animation: flameDance 0.6s ease-in-out infinite; }
+
+.candle-hint {
+  font-size:0.78rem; color:var(--muted); letter-spacing:0.1em; margin-top:0.5rem;
+  animation: pulse 2s ease infinite;
+}
+@keyframes pulse { 0%,100%{opacity:0.5} 50%{opacity:1} }
+
+.finale-msg {
+  font-family:'Lora',serif; font-style:italic;
+  font-size:1rem; color:var(--muted); max-width:320px;
+  line-height:1.7; margin-top:1rem;
+  opacity:0; transition:opacity 1s ease;
+}
+.finale-msg.show { opacity:1; }
+
+/* ── CONFETTI ── */
+.confetti-piece {
+  position:fixed; top:-20px; pointer-events:none; z-index:300;
+  border-radius:2px;
+  animation: confettiFall linear forwards;
+}
+@keyframes confettiFall {
+  to { transform:translateY(110vh) rotate(720deg); opacity:0; }
+}
+
+/* ── MOBILE tweak ── */
+@media (max-height:680px) {
+  .card-photo .placeholder-photo,
+  .card-photo img { aspect-ratio:3/2; }
+  .card-video .placeholder-video,
+  .card-video video { max-height:45vh; aspect-ratio:16/9; }
+}
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<div id="stage">
+  <div id="dots"></div>
+  <div class="step-label" id="step-label"></div>
+  <div id="card-area"></div>
+  <div id="btn-wrap">
+    <button id="btn-next"><span class="shine"></span>✨ Suivant</button>
+    <span id="step-counter"></span>
+  </div>
+</div>
+
+<!-- FINALE -->
+<div id="finale">
+  <div class="finale-title">Joyeux Anniversaire</div>
+  <!-- 🔧 REMPLACE "Prénom" par le prénom de ta petite amie -->
+  <div class="finale-name">MADAME MADAME ! 🎉</div>
+
+  <svg id="cake-svg" width="220" height="190" viewBox="0 0 220 190" xmlns="http://www.w3.org/2000/svg" onclick="blowCandle(this)">
+    <!-- Assiette -->
+    <ellipse cx="110" cy="178" rx="100" ry="10" fill="#2a1040" opacity="0.5"/>
+    <!-- Base gâteau layer 2 -->
+    <rect x="18" y="110" width="184" height="65" rx="10" fill="#e06fa0"/>
+    <rect x="18" y="110" width="184" height="18" rx="6" fill="#f594bc"/>
+    <!-- Déco layer 2 -->
+    <circle cx="52"  cy="120" r="5" fill="#fff" opacity="0.5"/>
+    <circle cx="80"  cy="118" r="4" fill="#ffe066" opacity="0.6"/>
+    <circle cx="110" cy="120" r="5" fill="#fff" opacity="0.5"/>
+    <circle cx="140" cy="118" r="4" fill="#ffe066" opacity="0.6"/>
+    <circle cx="168" cy="120" r="5" fill="#fff" opacity="0.5"/>
+    <!-- Crème layer 2 -->
+    <path d="M18 110 Q30 97 42 110 Q54 97 66 110 Q78 97 90 110 Q102 97 114 110 Q126 97 138 110 Q150 97 162 110 Q174 97 186 110 Q198 97 202 110" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <!-- Base gâteau layer 1 -->
+    <rect x="30" y="65" width="160" height="52" rx="8" fill="#c45a8a"/>
+    <rect x="30" y="65" width="160" height="16" rx="5" fill="#e080aa"/>
+    <!-- Crème layer 1 -->
+    <path d="M30 65 Q42 53 54 65 Q66 53 78 65 Q90 53 102 65 Q114 53 126 65 Q138 53 150 65 Q162 53 174 65 Q186 53 190 65" stroke="#fff9" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+    <!-- Déco layer 1 -->
+    <circle cx="68"  cy="78" r="4" fill="#ffe066" opacity="0.7"/>
+    <circle cx="110" cy="76" r="4" fill="#fff"    opacity="0.6"/>
+    <circle cx="152" cy="78" r="4" fill="#ffe066" opacity="0.7"/>
+
+    <!-- BOUGIES (cliquables via JS) -->
+    <!-- Bougie 1 -->
+    <g class="candle-grp" data-id="0">
+      <rect x="63" y="38" width="12" height="30" rx="4" fill="#ffe066"/>
+      <rect x="63" y="38" width="12" height="8"  rx="3" fill="#ffd000"/>
+      <g class="candle-flame flame-anim">
+        <ellipse cx="69" cy="33" rx="5" ry="8" fill="#ff9a30"/>
+        <ellipse cx="69" cy="33" rx="3" ry="5" fill="#ffe566"/>
+        <circle  cx="69" cy="30" r="2"          fill="#fff"/>
+      </g>
+    </g>
+    <!-- Bougie 2 -->
+    <g class="candle-grp" data-id="1">
+      <rect x="104" y="32" width="12" height="36" rx="4" fill="#ff9ad8"/>
+      <rect x="104" y="32" width="12" height="8"  rx="3" fill="#ff6abe"/>
+      <g class="candle-flame flame-anim" style="animation-delay:0.2s">
+        <ellipse cx="110" cy="27" rx="5" ry="8" fill="#ff9a30"/>
+        <ellipse cx="110" cy="27" rx="3" ry="5" fill="#ffe566"/>
+        <circle  cx="110" cy="24" r="2"          fill="#fff"/>
+      </g>
+    </g>
+    <!-- Bougie 3 -->
+    <g class="candle-grp" data-id="2">
+      <rect x="145" y="38" width="12" height="30" rx="4" fill="#43e8b0"/>
+      <rect x="145" y="38" width="12" height="8"  rx="3" fill="#20c897"/>
+      <g class="candle-flame flame-anim" style="animation-delay:0.4s">
+        <ellipse cx="151" cy="33" rx="5" ry="8" fill="#ff9a30"/>
+        <ellipse cx="151" cy="33" rx="3" ry="5" fill="#ffe566"/>
+        <circle  cx="151" cy="30" r="2"          fill="#fff"/>
+      </g>
+    </g>
+
+    <!-- Écriture -->
+    <text x="110" y="148" text-anchor="middle" font-family="'Pacifico',cursive" font-size="13" fill="#fff" opacity="0.9">Joyeux Anniversaire !</text>
+  </svg>
+
+  <p class="candle-hint" id="candle-hint">👆 Clique sur le gâteau pour souffler les bougies !</p>
+  <!-- 🔧 PERSONNALISE ce message final -->
+  <p class="finale-msg" id="finale-msg">
+    Que cette nouvelle année t'apporte tout ce que tu mérites :<br>
+    du bonheur, des aventures, des éclats de rire<br>et plein de belles surprises. 🎁✨
+  </p>
+</div>
+
+<audio id="bg-music" loop>
+  <source src="https://raw.githubusercontent.com/eightronia/ronia/7e4be938c52f231a867708f4505eed05b362e594/ssstik.io_1777313873100.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+const STEPS = [
+  {
+    type: 'intro',
+    emoji: '🎉',
+    title: 'C\'est ton jour, EIGHT RONIA !',
+    text: 'Une petite surprise t\'attend… Appuie sur le bouton et découvre ce qu\'on a préparé rien que pour toi. 💫'
+  },
+
+  {
+    type: 'quote',
+    tag: '✨ Pour toi',
+    quote: '« Une femme qui sait ce qu\'elle veut, qui rit fort et brille par elle-même — c\'est la définition de la force. »',
+    author: '—'
+  },
+
+  {
+    type: 'photo',
+    url: 'https://raw.githubusercontent.com/eightronia/ronia/685bdbe05a4306101446ccbcb8337e36967dd02e/WhatsApp%20Image%202026-04-27%20at%2019.jpeg',
+    caption: 'Elle, tout simplement. 🌸'
+  },
+
+  {
+    type: 'quote',
+    tag: '🌟 Sagesse',
+    quote: '« La vie, c\'est ce qui se passe pendant que tu fais d\'autres projets. Profite de chaque instant. »',
+    author: '—'
+  },
+
+  {
+    type: 'photo',
+    url: 'https://raw.githubusercontent.com/eightronia/ronia/685bdbe05a4306101446ccbcb8337e36967dd02e/WhatsApp%20Image%202026-04-27%20at%2019.51.11.jpeg',
+    caption: 'Un souvenir qui dit tout. 💖'
+  },
+
+  {
+    type: 'lyrics',
+    note: '🎶',
+    text: ' Douce comme la canne à sucre Tu me rends chaud même sous la pluie Avec toi le temps s\'égare et s\'ennuie Ma belle, tu es ma seule issue. ',
+    artist: '—'
+  },
+
+  {
+    type: 'video',
+    url: 'https://raw.githubusercontent.com/eightronia/ronia/685bdbe05a4306101446ccbcb8337e36967dd02e/WhatsApp%20Video%202026-04-27%20at%2019.53.34.mp4',
+    label: 'Ta presence est une source d\'inspiration '
+  },
+
+  {
+    type: 'quote',
+    tag: 'Wuldy',
+    quote: '«I feel you are the last angel God made. Love me, bring me everywhere.»',
+    author: '—'
+  },
+
+
+];
+
+/* ================================================================
+   FIN DE LA CONFIGURATION
+   ================================================================ */
+
+let current = 0;
+let candlesOut = 0;
+const totalCandles = 3;
+
+// Stars
+const starsEl = document.getElementById('stars');
+for (let i = 0; i < 80; i++) {
+  const s = document.createElement('div');
+  s.className = 'star';
+  const size = Math.random() * 2.5 + 0.5;
+  s.style.cssText = `
+    width:${size}px; height:${size}px;
+    top:${Math.random()*100}%; left:${Math.random()*100}%;
+    animation-duration:${Math.random()*4+2}s;
+    animation-delay:${Math.random()*4}s;
+  `;
+  starsEl.appendChild(s);
+}
+
+// Build dots
+const dotsEl = document.getElementById('dots');
+STEPS.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' active' : '');
+  dotsEl.appendChild(d);
+});
+
+function updateDots() {
+  document.querySelectorAll('.dot').forEach((d, i) => {
+    d.className = 'dot' + (i < current ? ' done' : i === current ? ' active' : '');
+  });
+}
+
+function buildCard(step) {
+  switch(step.type) {
+    case 'intro': return `
+      <div class="card card-intro">
+        <span class="big-emoji">${step.emoji}</span>
+        <h1>${step.title}</h1>
+        <p>${step.text}</p>
+      </div>`;
+
+    case 'quote': return `
+      <div class="card card-quote">
+        <span class="qdeco tl">"</span>
+        <div class="tag">${step.tag}</div>
+        <blockquote>${step.quote}</blockquote>
+        <div class="qauthor">${step.author}</div>
+        <span class="qdeco br">"</span>
+      </div>`;
+
+    case 'lyrics': return `
+      <div class="card card-lyrics">
+        <div class="tag">🎵 Paroles</div>
+        <span class="note">${step.note}</span>
+        <div class="lyric-text">${step.text.replace(/\n/g,'<br>')}</div>
+        <div class="lyric-artist">${step.artist}</div>
+      </div>`;
+
+    case 'photo': return `
+      <div class="card card-photo">
+        <div class="tag">📸 Photo</div>
+        ${step.url
+          ? `<img src="${step.url}" alt="Photo" onerror="this.outerHTML='<div class=\\'placeholder-photo\\'><span style=\\'font-size:2rem\\'>📷</span><span>Image non chargée<br><small>Vérifie l\\'URL dans le code</small></span></div>'">`
+          : `<div class="placeholder-photo">
+               <span style="font-size:2.5rem">📷</span>
+               <span>Ajoute l'URL de ta photo<br><small style="opacity:0.5">(lis les instructions dans le code)</small></span>
+             </div>`
+        }
+        <div class="photo-caption">${step.caption}</div>
+      </div>`;
+
+    case 'video': return `
+      <div class="card card-video">
+        <div class="tag">${step.label}</div>
+        ${step.url
+          ? `<video controls playsinline>
+               <source src="${step.url}" type="video/mp4">
+               <p style="color:#fff;padding:1rem">Ton navigateur ne supporte pas la vidéo.</p>
+             </video>`
+          : `<div class="placeholder-video">
+               <div class="play-circle">▶</div>
+               <span>Ajoute l'URL de ta vidéo<br><small style="opacity:0.5">(lis les instructions dans le code)</small></span>
+             </div>`
+        }
+      </div>`;
+  }
+}
+
+function stepLabel(i) {
+  if (i === 0) return 'Bienvenue 🎊';
+  return `Surprise ${i} sur ${STEPS.length - 1}`;
+}
+
+function showStep(i) {
+  const area = document.getElementById('card-area');
+  const label = document.getElementById('step-label');
+  const counter = document.getElementById('step-counter');
+
+  // Animate out
+  const old = area.querySelector('.card');
+  if (old) {
+    old.classList.add('leaving');
+    setTimeout(() => old.remove(), 350);
+  }
+
+  setTimeout(() => {
+    label.textContent = stepLabel(i);
+    label.style.animation = 'none';
+    void label.offsetWidth;
+    label.style.animation = '';
+    area.innerHTML = buildCard(STEPS[i]);
+
+    const isLast = i === STEPS.length - 1;
+    counter.textContent = isLast
+      ? '🎂 Dernier step !'
+      : `${i + 1} / ${STEPS.length}`;
+
+    const btn = document.getElementById('btn-next');
+    btn.textContent = isLast ? '🎂 Voir la surprise finale !' : '✨ Suivant';
+    btn.innerHTML += '<span class="shine"></span>';
+  }, old ? 360 : 0);
+
+  updateDots();
+}
+
+document.getElementById('btn-next').addEventListener('click', () => {
+  if (current < STEPS.length - 1) {
+    current++;
+    showStep(current);
+  } else {
+    document.getElementById('stage').style.display = 'none';
+    document.getElementById('finale').classList.add('show');
+
+    const music = document.getElementById('bg-music');
+    music.volume = 0.6;
+    music.play().catch(e => console.log("Autoplay bloqué"));
+
+    launchConfetti();
+  }
+});
+showStep(0);
+
+// ── CANDLES ──
+function blowCandle(svg) {
+  const flames = svg.querySelectorAll('.candle-flame');
+  const nextFlame = [...flames].find(f => !f.classList.contains('out'));
+  if (!nextFlame) return;
+
+  nextFlame.classList.add('out');
+  candlesOut++;
+
+  // Petit burst de confetti à chaque bougie
+  launchConfetti(8);
+
+  if (candlesOut >= totalCandles) {
+    document.getElementById('candle-hint').textContent = '🎉 Toutes les bougies soufflées !';
+    document.getElementById('finale-msg').classList.add('show');
+    launchConfetti(60);
+    svg.style.cursor = 'default';
+  }
+}
+
+// ── CONFETTI ──
+function launchConfetti(count = 80) {
+  const colors = ['#f5c842','#ff6b9d','#43e8b0','#4facfe','#ff9a56','#fff'];
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    const size = Math.random() * 10 + 5;
+    el.style.cssText = `
+      left: ${Math.random() * 100}vw;
+      width: ${size}px; height: ${size * (Math.random() > 0.5 ? 1 : 0.4)}px;
+      background: ${colors[Math.floor(Math.random() * colors.length)]};
+      animation-duration: ${Math.random() * 2 + 2}s;
+      animation-delay: ${Math.random() * 1}s;
+      opacity: ${Math.random() * 0.7 + 0.3};
+      transform: rotate(${Math.random() * 360}deg);
+      border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+    `;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 4000);
+  }
+}
+</script>
+</body>
+</html>
